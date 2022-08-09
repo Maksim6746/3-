@@ -7,6 +7,7 @@
 
 import UIKit
 
+//MARK: -IBOutlet
 class ViewController: UIViewController {
     
     @IBOutlet var viewColor: UIView!
@@ -19,53 +20,53 @@ class ViewController: UIViewController {
     @IBOutlet var greenLabel: UILabel!
     @IBOutlet var redLabel: UILabel!
     
-    
+    //MARK: - LifeCicle view
     override func viewDidLoad() {
         super.viewDidLoad()
         
         viewColor.layer.cornerRadius = 20
         
-        setupSlider()
-        setupLabel()
+        setColour()
+        setValue(for: redLabel, greenLabel, blueLabel)
     }
     
-    @IBAction func sliderAction() {
-        redLabel.text = String(NSString(format: "%.2f", redSlider.value))
-        greenLabel.text = String(NSString(format: "%.2f", greenSlider.value))
-        blueLabel.text = String(NSString(format: "%.2f", blueSlider.value))
+    //MARK: - IBAction
+    @IBAction func sliderAction(_ sender: UISlider) {
+        setColour()
         
-        viewColor.backgroundColor = UIColor(red: CGFloat(redSlider.value) / 1, green: CGFloat(greenSlider.value) / 1, blue: CGFloat(blueSlider.value) / 1, alpha: 1)
+        switch sender {
+        case redSlider:
+            setValue(for: redLabel)
+        case greenLabel:
+            setValue(for: greenLabel)
+        default:
+            setValue(for: blueLabel)
+        }
     }
     
-
-    private func setupSlider() {
-        redSlider.value = 0.35
-        redSlider.minimumValue = 0
-        redSlider.maximumValue = 1
-        redSlider.minimumTrackTintColor = .red
-        redSlider.maximumTrackTintColor = .white
-        
-        greenSlider.value = 0.25
-        greenSlider.minimumValue = 0
-        greenSlider.maximumValue = 1
-        greenSlider.minimumTrackTintColor = .green
-        greenSlider.maximumTrackTintColor = .white
-        
-        blueSlider.value = 0.15
-        blueSlider.minimumValue = 0
-        blueSlider.maximumValue = 1
-        blueSlider.minimumTrackTintColor = .blue
-        blueSlider.maximumTrackTintColor = .white
+    //MARK: - Private methods
+    private func setColour() {
+        viewColor.backgroundColor = UIColor(red: CGFloat(redSlider.value),
+                                            green: CGFloat(greenSlider.value),
+                                            blue: CGFloat(blueSlider.value),
+                                            alpha: 1
+        )
     }
     
-    private func setupLabel(){
-        redLabel.text = String(redSlider.value)
-        greenLabel.text = String(greenSlider.value)
-        blueLabel.text = String(blueSlider.value)
+    private func setValue(for labels: UILabel...) {
+        labels.forEach{ label in
+            switch label {
+            case redLabel:
+                redLabel.text = String(format: "%.2f", redSlider.value)
+            case blueLabel:
+                blueLabel.text = String(format: "%.2f", blueSlider.value)
+            case greenLabel:
+                greenLabel.text = String(format: "%.2f", greenSlider.value)
+            default: break
+            }
+        }
     }
-    
     
 }
-        
-        
-        
+
+
